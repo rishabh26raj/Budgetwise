@@ -12,7 +12,14 @@ import Layout from './components/Layout';
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useAuth();
-  if (loading) return <div className="flex items-center justify-center h-screen">Loading...</div>;
+  if (loading) return (
+    <div className="flex items-center justify-center h-screen" style={{ background: 'var(--bg-primary)' }}>
+      <div className="flex flex-col items-center gap-4">
+        <div className="spinner" style={{ width: '48px', height: '48px' }}></div>
+        <p className="text-dark-muted text-sm">Loading BudgetWise…</p>
+      </div>
+    </div>
+  );
   return user ? children : <Navigate to="/login" />;
 };
 
@@ -20,54 +27,40 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <div className="min-h-screen bg-gray-50 text-gray-900 font-sans">
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/" element={
-              <PrivateRoute>
-                <Layout>
-                  <Dashboard />
-                </Layout>
-              </PrivateRoute>
-            } />
-            <Route path="/expenses" element={
-              <PrivateRoute>
-                <Layout>
-                  <Expenses />
-                </Layout>
-              </PrivateRoute>
-            } />
-            <Route path="/reports" element={
-              <PrivateRoute>
-                <Layout>
-                  <Reports />
-                </Layout>
-              </PrivateRoute>
-            } />
-            <Route path="/predictions" element={
-              <PrivateRoute>
-                <Layout>
-                  <Predictions />
-                </Layout>
-              </PrivateRoute>
-            } />
-            <Route path="/insights" element={
-              <PrivateRoute>
-                <Layout>
-                  <Insights />
-                </Layout>
-              </PrivateRoute>
-            } />
-            <Route path="/settings" element={
-              <PrivateRoute>
-                <Layout>
-                  <Settings />
-                </Layout>
-              </PrivateRoute>
-            } />
-          </Routes>
-        </div>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/" element={
+            <PrivateRoute>
+              <Layout><Dashboard /></Layout>
+            </PrivateRoute>
+          } />
+          <Route path="/expenses" element={
+            <PrivateRoute>
+              <Layout><Expenses /></Layout>
+            </PrivateRoute>
+          } />
+          <Route path="/reports" element={
+            <PrivateRoute>
+              <Layout><Reports /></Layout>
+            </PrivateRoute>
+          } />
+          <Route path="/predictions" element={
+            <PrivateRoute>
+              <Layout><Predictions /></Layout>
+            </PrivateRoute>
+          } />
+          <Route path="/insights" element={
+            <PrivateRoute>
+              <Layout><Insights /></Layout>
+            </PrivateRoute>
+          } />
+          <Route path="/settings" element={
+            <PrivateRoute>
+              <Layout><Settings /></Layout>
+            </PrivateRoute>
+          } />
+        </Routes>
       </Router>
     </AuthProvider>
   );

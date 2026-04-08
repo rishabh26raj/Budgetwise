@@ -1,14 +1,15 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from backend.routers import auth, expenses, ai, budget
+from backend.routers import auth, expenses, ai, budget, reports
 
 
-app = FastAPI(title="Budgetwise API")
+app = FastAPI(title="Budgetwise API", version="2.0.0")
 
 # CORS Configuration
 origins = [
-    "http://localhost:5173", # Vite default port
-    "http://localhost:3000", # React default port
+    "http://localhost:5173",
+    "http://localhost:3000",
+    "http://127.0.0.1:5173",
 ]
 
 app.add_middleware(
@@ -24,7 +25,14 @@ app.include_router(auth.router)
 app.include_router(expenses.router)
 app.include_router(budget.router)
 app.include_router(ai.router)
+app.include_router(reports.router)
+
 
 @app.get("/")
 def read_root():
-    return {"message": "Welcome to Budgetwise API"}
+    return {"message": "Welcome to Budgetwise API v2.0", "status": "running"}
+
+
+@app.get("/health")
+def health():
+    return {"status": "healthy"}
